@@ -1,3 +1,6 @@
+# TODO App in NestJS
+Its todo application with complete functionality of Basic CRUD operations. Currently using local array but sooner I will update it and connect database to perform the operations with new advancements.
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
