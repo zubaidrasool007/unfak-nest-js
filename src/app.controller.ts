@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Req } from '@nestjs/common';
 import { AppService, ITeam } from './app.service';
 
 @Controller()
@@ -6,23 +6,36 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getTeam(): Array<ITeam> | { message: string } {
-    return this.appService.getTeam();
+  async getTeam(): Promise<Array<ITeam> | { message: string }> {
+    const response = await this.appService.getTeam();
+    return response;
   }
 
   @Post()
-  addNewTeamMember(@Body() newMember: ITeam): Array<ITeam> | { message: string } {
-    return this.appService.addNewTeamMember(newMember);
+  async addNewTeamMember(@Body() newMember: ITeam): Promise<Array<ITeam> | { message: string }> {
+    const response = await this.appService.addNewTeamMember(newMember);
+    if (response['message']) {
+      throw new HttpException(response['message'], HttpStatus.BAD_REQUEST);
+    }
+    return response;
   }
 
   @Put()
-  updateMemberInfo(@Body() updatingMember: ITeam): Array<ITeam> | { message: string } {
-    return this.appService.updateMemberInfo(updatingMember);
+  async updateMemberInfo(@Body() updatingMember: ITeam): Promise<Array<ITeam> | { message: string }> {
+    const response = await this.appService.updateMemberInfo(updatingMember);
+    if (response['message']) {
+      throw new HttpException(response['message'], HttpStatus.BAD_REQUEST);
+    }
+    return response;
   }
 
   @Delete(':id')
-  removeTeamMember(@Param('id') id: number): Array<ITeam> | { message: string } {
-    return this.appService.removeTeamMember(id);
+  async removeTeamMember(@Param('id') id: number): Promise<Array<ITeam> | { message: string }> {
+    const response = await this.appService.removeTeamMember(id);
+    if (response['message']) {
+      throw new HttpException(response['message'], HttpStatus.BAD_REQUEST);
+    }
+    return response;
   }
 
 }
